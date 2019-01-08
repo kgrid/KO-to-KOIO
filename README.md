@@ -11,5 +11,5 @@ In the project directory run
 
 Example:
 ```node object-converter.js /Kgrid/labwise/99999-fk4g168s5p/v0.0.2 v0.0.3```
-creates a new version of the labwise 99999/fk4g168s5p object using the data in version 2
+creates a new version of the labwise 99999/fk4g168s5p object using the data in version v0.0.2
 
