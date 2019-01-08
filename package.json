@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/kgrid/KO-to-KOIO.git"
+  },
   "author": "Nate Gittlen",
   "license": "ISC",
   "dependencies": {
