@@ -2,7 +2,7 @@
   "name": "ko-to-koio",
   "version": "1.0.0",
   "description": "A simple script to convert versioned knowledge objects into koio-compliant objects",
-  "main": "index.js",
+  "main": "object-converter.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
