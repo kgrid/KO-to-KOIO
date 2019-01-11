@@ -61,6 +61,8 @@ function convertObject(versionData, modelData) {
   var impDir = objectDir + '/' + impId;
   fs.ensureDir(impDir); // Create implementation directory
   var impData = {};
+  var impContext = [];
+  impContext.push("http://kgrid.org/koio/contexts/implementation.jsonld")
   impData['@id'] = impId;
   impData['@type'] = "koio:Implementation";
   impData.identifier = impId;
@@ -69,8 +71,12 @@ function convertObject(versionData, modelData) {
   impData.keywords = versionData.keywords;
   impData.hasServiceSpecification = impId + '/service-specification.yaml';
   impData.hasDeploymentSpecification = impId + '/deployment-specification.yaml';
-  impData.hasPayload = impId + '/' + modelData.resource.split('/')[1];
-  impData['@context'] = context;
+  if(modelData.resource.split('/').length === 2) {
+    impData.hasPayload = impId + '/' + modelData.resource.split('/')[1];
+  } else {
+    impData.hasPayload = impId + '/' + modelData.resource;
+  }
+  impData['@context'] = impContext;
   console.log(
       "Writing implementation-level json-ld to " + impDir + '/metadata.json')
   fs.writeFile(impDir + '/metadata.json', JSON.stringify(impData, null, 2),
@@ -91,7 +97,7 @@ function convertObject(versionData, modelData) {
       return console.log(err);
     }
   });
-
+//
   // Read in the service spec and edit the version number before copying it back
   console.log(
       "Copying file from " + args[0] + '/' + versionData.service + " to " +
@@ -103,17 +109,19 @@ function convertObject(versionData, modelData) {
     var serviceSpec = yaml.safeLoad(data);
   updateServiceSpec(impData, serviceSpec);
   });
-  
+
   // Create deployment specificiation yaml
   console.log("Writing deployment spec to " + objectDir + '/' + args[1] + '/' + 'deployment-specification.yaml');
   var deployData = {};
   var endpoints = {}
   var endpoint = {};
-  
   endpoint.adapterType = modelData.adapterType;
-  endpoint.artifact = modelData.resource.split('/')[1];
+  if(modelData.resource.split('/').length === 2) {
+    endpoint.artifact = modelData.resource.split('/')[1];
+  } else {
+    endpoint.artifact = modelData.resource;
+  }
   endpoint.entry = modelData.functionName;
-  
   endpoints['/'+ modelData.functionName] = endpoint;
   deployData.endpoints = endpoints;
 
